@@ -49,6 +49,8 @@ exports.signin = (req, res) => {
         if(user){
 
             if(user.authenticate(req.body.password)){
+                // console.log(user._id)
+                // console.log(user.role)
                 const token = jwt.sign({_id: user._id, role: user.role}, 'secret', { expiresIn: '1h' });
                 const { _id, firstName, lastName, email, role, fullName } = user;
                 res.status(200).json({
