@@ -1,12 +1,16 @@
 import React from 'react'
 import Layout from '../../components/layout'
-import {Jumbotron} from 'react-bootstrap'
+import './style.css'
+import { NavLink } from 'react-router-dom'
+import { Col, Container, Jumbotron, Row } from 'react-bootstrap'
 const Home = (props) => {
     return (
-        <Layout>
-            <Jumbotron>
-            <h1>Welcome to admin page</h1>
-            </Jumbotron>
+        <Layout sidebar>
+
+            {/* <Jumbotron>
+                
+            </Jumbotron> */}
+
         </Layout>
     )
 }
