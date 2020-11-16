@@ -1,4 +1,4 @@
-import category from "../../../backend/src/models/category"
+// import category from "../../../backend/src/models/category"
 import { categoryConstants } from "../actions/constants"
 
 const initState = {
@@ -7,18 +7,32 @@ const initState = {
     error: null
 }
 
-const buildNewCategories = (categories, category) => {
+const buildNewCategories = (parentId, categories, category) => {
     let myCategories = []
 
     for (let cat of categories) {
-        if (cat.children) {
+        // console.log(cat._id)
+        // console.log(myCategories)
+        if (cat._id == parentId) {
             myCategories.push({
                 ...cat,
-                children: cat.children && cat.children.length > 0 ? buildNewCategories(cat.children, category) : []
-            })
+                children: cat.children && cat.children.length > 0 ? buildNewCategories(parentId, [...cat.children, {
+                    _id: category._id,
+                    name: category.name,
+                    slug: category.slug,
+                    parentId: category.parentId,
+                    children: category.children
+                }], category) : []
+
+            });
+        } else {
+            myCategories.push({
+                ...cat,
+                children: cat.children && cat.children.length > 0 ? buildNewCategories(parentId, cat.children, category) : []
+            });
         }
-        return myCategories
     }
+    return myCategories
 }
 
 export default (state = initState, action) => {
@@ -32,13 +46,18 @@ export default (state = initState, action) => {
         case categoryConstants.ADD_NEW_CATEGORY_REQUEST:
             state = {
                 ...state,
+
                 loading: false
             }
             break
         case categoryConstants.ADD_NEW_CATEGORY_SUCCESS:
+            const category = action.payload.category;
+            // console.log(category.parentId)
+            const updatedCategories = buildNewCategories(category.parentId, state.categories, category)
+            console.log('updatecategories', updatedCategories)
             state = {
                 ...state,
-                categories: buildNewCategories(state.categories, action.payload.category),
+                categories: updatedCategories,
                 loading: false
             }
             break

@@ -51,7 +51,7 @@ exports.signin = (req, res) => {
                 if (user.authenticate(req.body.password) && user.role === 'admin') {
                     const token = jwt.sign({ _id: user._id, role: user.role }, 'secret', { expiresIn: '1h' });
                     const { _id, firstName, lastName, email, role, fullName } = user;
-                    res.cookie('token', token, { expiresIn: '1h' })
+                    res.cookie('token', token, { expiresIn: '1d' })
                     res.status(200).json({
                         token,
                         user: { _id, firstName, lastName, email, role, fullName }
