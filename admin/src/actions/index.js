@@ -1,3 +1,5 @@
 export * from './authA'
 export * from './userA'
 export * from './categoryA'
+export * from './initialDataA'
+export * from './productA'

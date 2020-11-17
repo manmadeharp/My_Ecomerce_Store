@@ -4,22 +4,27 @@ import { categoryConstants } from './constants'
 export const getAllCategory = () => {
     return async dispatch => {
         dispatch({ type: categoryConstants.GET_ALL_CATEGORIES_REQUEST })
-        const res = await axios.get('category/getcategory')
-        console.log(res)
-        if (res.status === 201) { //should be 200 for some reason
+        try {
+            const res = await axios.get('category/getcategory')
+            if (res.status === 201) { //should be 200 for some reason
 
-            const { categoryList } = res.data;
-            console.log(res.data)
-            dispatch({
-                type: categoryConstants.GET_ALL_CATEGORIES_SUCCESS,
-                payload: { categories: categoryList }
-            })
-        } else {
-            dispatch({
-                type: categoryConstants.GET_ALL_CATEGORIES_FAILURE,
-                payload: { error: res.data.error }
-            })
+                const { categoryList } = res.data;
+                console.log(res.data)
+                dispatch({
+                    type: categoryConstants.GET_ALL_CATEGORIES_SUCCESS,
+                    payload: { categories: categoryList }
+                })
+            } else {
+                dispatch({
+                    type: categoryConstants.GET_ALL_CATEGORIES_FAILURE,
+                    payload: { error: res.data.error }
+                })
+            }
+        } catch (error) {
+            // const { } = error.response
+            console.log(error.response)
         }
+
     }
 }
 
